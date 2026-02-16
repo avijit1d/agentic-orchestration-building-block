@@ -14,44 +14,53 @@ Demonstrates how a **Master AI Agent** can coordinate multiple **specialized AI 
   - `Weather Agent` – weather queries
   - `Google Calendar Agent` – Meeting scheduling / updating & removing scheduled events
   - `Secretary Agent` – general knowledge / research
+<p align="center">
+  <img src="docs/architecture.png" width="600"/>
+</p>
+<p align="center"><em>
+Figure 1: Solution Architectire building block.
+</em></p>
 
 - **Workflow Execution**:
 
-
-
-
-![Architecture Diagram](docs/architecture_diagram.png)
+<p align="center">
+  <img src="docs/workflow.png" width="600"/>
+</p>
+<p align="center"><em>
+Figure 2: N8N Workflow.
+</em></p>
 
 ---
 
 ## Setup & Usage
 
 1. **Import Workflow**:
- - Open n8n
- - Import `workflow/multi_agent_workflow.json`
+   - Open n8n
+   - Import `workflow/multi_agent_workflow.json`
 
 2. **Configure API Keys**:
- - OpenAI API key (for embeddings & chat)
+   - OpenAI API key (for embeddings & chat)
+   - Redis API key (short term memory)
  
 3. **Memory Configuration**:
- - Enable memory node (Redis conversational memory)
- - Best to add vector memory for embedding-based context retrieval (than retrieving whole previous conversations - Memory bloating)
+   - Enable memory node (Redis conversational memory)
+   - Best to add vector memory for embedding-based context retrieval (than retrieving whole previous conversations - Memory bloating)
 
 4. **Run Workflow**:
- - Trigger user input
- - Master AI Agent orchestrates tasks, calls tools, and returns synthesized response
- - Supports multi-turn conversations with follow-up questions
+   - Trigger user input
+   - Master AI Agent orchestrates tasks, calls tools, and returns synthesized response
+   - Supports multi-turn conversations with follow-up questions
 
 ---
 
-## Sample Test Cases
+## Sample Test Scenario
 
-| User Prompts                                     | Expected Agent Assignment                  | Example Output            |
-|--------------------------------------------------|--------------------------------------------|---------------------------|
-| How much INR will I get for 500 USD?             | Forex Agent                                | 500 USD ≈ 41,500 INR      |
-| Will it rain in Bangalore today?                 | Weather Agent                              | Yes, rain expected today  |
-| Book a meeting with Ram tomorrow at 5 PM         | Google Calendar Agent                      | Meeting scheduled at 5 PM |
-| Which is the most Ancient civilization in India? | Secretary Agent                            | Indus Valley Civilization |
+| User Prompts                                     | Expected Agent Assignment | 
+|--------------------------------------------------|---------------------------|
+| How much INR will I get for 500 USD?             | Forex Agent               | 
+| Will it rain in Bangalore today?                 | Weather Agent             | 
+| Book a meeting with Ram tomorrow at 5 PM         | Google Calendar Agent     | 
+| Which is the most Ancient civilization in India? | Secretary Agent           | 
 
 ## Design Considerations
 
