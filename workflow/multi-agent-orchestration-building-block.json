@@ -1,0 +1,863 @@
+{
+  "name": "multi-agent-orchestration-building-block",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -5216,
+        -1424
+      ],
+      "id": "c1cdcae9-647b-4259-9cec-6b52bc40902f",
+      "name": "When chat message received",
+      "webhookId": "7a365849-3708-4d2f-96b1-6a465973db6a"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-chat-latest",
+          "mode": "list",
+          "cachedResultName": "gpt-5-chat-latest"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -4368,
+        -848
+      ],
+      "id": "14ff0854-a12d-40ec-984b-47f1b1b10c72",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "2S81GobY9Iib8y4e",
+          "name": "openAI Paid API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5900d627-d1ae-4f3f-95e3-72c2eb3cf5fb",
+              "name": "ResponseText",
+              "value": "You have asked an unsafe query",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -4528,
+        -1216
+      ],
+      "id": "e132b813-7328-4bf6-acf7-0ce5c841a751",
+      "name": "Return as UNSAFE msg"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a6bc39d2-ae11-4b3b-81bb-d82dd620bc3a",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "SAFE",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -4560,
+        -1424
+      ],
+      "id": "ee81d69d-1507-43b1-9db5-d08acbadf3f2",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "cityName": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('City', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-base.openWeatherMapTool",
+      "typeVersion": 1,
+      "position": [
+        -2688,
+        -928
+      ],
+      "id": "d347a3d3-ee37-4064-9ce9-b4a0afce1d9a",
+      "name": "OpenWeatherMap",
+      "credentials": {
+        "openWeatherMapApi": {
+          "id": "ZkfEGraDyi98Sjka",
+          "name": "test1"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Fetches real-time USD to INR conversion from exchangerate-api.com",
+        "url": "https://v6.exchangerate-api.com/v6/cadd2796bffc3dab1b78c206/latest/USD",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        -3232,
+        -896
+      ],
+      "id": "0e648907-383f-42d1-90b5-0fed95f9bbcb",
+      "name": "forex_request"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "avijit1.d@gmail.com",
+          "mode": "list",
+          "cachedResultName": "avijit1.d@gmail.com"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -2144,
+        -912
+      ],
+      "id": "9333cfe1-06ec-4f34-9909-92ec7bcd4c19",
+      "name": "Get many events in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "MiUOkueMDOxLtIWO",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "avijit1.d@gmail.com",
+          "mode": "list",
+          "cachedResultName": "avijit1.d@gmail.com"
+        },
+        "start": "={{ $fromAI('Start', `Created by Agent`, 'string') }}",
+        "end": "={{ $fromAI('End', ``, 'string') }}",
+        "useDefaultReminders": false,
+        "additionalFields": {
+          "attendees": [
+            "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('attendees0_Attendees', ``, 'string') }}"
+          ],
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -1968,
+        -928
+      ],
+      "id": "68750218-a4ec-453c-84c5-66f4811a0b61",
+      "name": "Create an event in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "MiUOkueMDOxLtIWO",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "avijit1.d@gmail.com",
+          "mode": "list",
+          "cachedResultName": "avijit1.d@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -1792,
+        -928
+      ],
+      "id": "5ddd07ff-81a9-4f63-9726-779b52bb6680",
+      "name": "Delete an event in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "MiUOkueMDOxLtIWO",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\": {\n\t\t\"output\": {\n\t\t\t\"type\": \"string\",\n            \"description\": \"input message is 'SAFE' or 'UNSAFE'\"\n\t\t}\n\t\t\n\t}\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -4720,
+        -1088
+      ],
+      "id": "80c2d1d2-5ce7-46d8-a10d-4156584c70fa",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -5008,
+        -1136
+      ],
+      "id": "5bb74d2a-7717-4469-b742-b96a1633b074",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "2S81GobY9Iib8y4e",
+          "name": "openAI Paid API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a content gatekeeper. Your job is to review a message and determine whether it is safe or unsafe. \nInstructions: \n1. If the message contains any harmful, offensive, illegal, or inappropriate content, classify it as UNSAFE. \n2. If the message is free of harmful or inappropriate content, classify it as SAFE. \n3. Only respond with one word: 'SAFE' or 'UNSAFE'. Do not add explanations"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -4896,
+        -1424
+      ],
+      "id": "ed8652a6-c08b-46fd-a091-0e3210bf900b",
+      "name": "Gatekeeper Agent1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=User message:\n{{ $('When chat message received').item.json.chatInput }}",
+        "options": {
+          "systemMessage": "You are a Master Orchestrator AI Agent coordinating specialized agents.\n\nYour responsibilities:\n\n1. Analyze the user input.\n2. Break it into independent tasks.\n3. Call the appropriate specialized agent tools.\n4. Wait for all tool responses.\n5. Combine tool outputs into a clear response.\n6. Determine if additional information is required to better serve the user.\n7. If clarification or continuation is useful, ask ONE relevant follow-up question.\n8. If the request is complete, provide a helpful next-step suggestion.\n\nRules:\n\n- Do NOT answer forex, weather, or calendar questions directly. Always use tools.\n- After combining tool outputs, think about what logical next question would improve the user experience.\n- Ask at most ONE follow-up question.\n- Do not mention tools or internal orchestration.\n- Keep responses natural and conversational."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -4288,
+        -1440
+      ],
+      "id": "ce07d327-6d90-40ef-ae2c-e1c157fa5578",
+      "name": "Manager Agent (LLM Chain)"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Use this agent related to Google Calendar Events",
+        "text": "=Call this agent for questions related to Google Calendar Events. The current date & time in IST is {{ $now }}. Retrieve, create, postpone, or delete Google Calendar events based on the user's request. Include date, time, title, and any relevant details. \n\nUser query: {{ $('When chat message received').item.json.chatInput }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 3,
+      "position": [
+        -2336,
+        -1136
+      ],
+      "id": "56ecdac8-e667-4cd6-a00b-3a22152a1014",
+      "name": "Google Calendar Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-chat-latest",
+          "mode": "list",
+          "cachedResultName": "gpt-5-chat-latest"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -2448,
+        -944
+      ],
+      "id": "7048a718-d767-4848-b7e8-606665074e5b",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "2S81GobY9Iib8y4e",
+          "name": "openAI Paid API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-chat-latest",
+          "mode": "list",
+          "cachedResultName": "gpt-5-chat-latest"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -3008,
+        -928
+      ],
+      "id": "b945a3fe-be2f-4a8d-a72a-9b4ac4202f29",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "2S81GobY9Iib8y4e",
+          "name": "openAI Paid API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-chat-latest",
+          "mode": "list",
+          "cachedResultName": "gpt-5-chat-latest"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -3552,
+        -880
+      ],
+      "id": "35d40b7e-3368-4b3c-9281-1c309bb71fcd",
+      "name": "OpenAI Chat Model4",
+      "credentials": {
+        "openAiApi": {
+          "id": "2S81GobY9Iib8y4e",
+          "name": "openAI Paid API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "For Forex Related General Queries: You are a Forex Assistant.",
+        "text": "For Forex Related General Queries: You are a Forex Assistant. Do not refuse. Always use this tool if a forex rate is requested.\n When a user asks about currency exchange, retrieve the latest forex rates (GBP, USD, EUR, JPY, etc.), explain briefly, and provide the answer in a structured format: [Currency Pair] – [Rate] – [Date/Time]. \nIf unavailable, respond with the closest recent information. For Real-time Conversion: \"Fetch the latest forex rate for the requested currency pair (e.g., USD/INR, GBP/JPY) and provide both the current rate and today’s percentage change.\" \n\nFor Market Insight: \"Summarize the current forex market trends for the requested currency pair, including today’s rate, volatility, and any significant news if available.\" For Simple Forex Related Queries: \"Give the latest exchange rate for the user’s requested currency pair in plain text format (e.g., 1 USD = 83.2 INR as of [time]).\n\nAlso provide historical conversion rate upto last 6 months.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 3,
+      "position": [
+        -3488,
+        -1120
+      ],
+      "id": "0f0393c6-f913-496e-9dd5-3ccba402519b",
+      "name": "Forex Agent"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Call this agent for questions related to weather and provide the answer",
+        "text": "Call this agent for questions related to weather and provide the answer",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 3,
+      "position": [
+        -2992,
+        -1120
+      ],
+      "id": "907e62a1-2689-47da-ab06-8a15f4d1bcb5",
+      "name": "Weather(AI Agent)"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-chat-latest",
+          "mode": "list",
+          "cachedResultName": "gpt-5-chat-latest"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -3968,
+        -880
+      ],
+      "id": "84561803-9a84-4566-a213-7583e2405f2b",
+      "name": "OpenAI Chat Model5",
+      "credentials": {
+        "openAiApi": {
+          "id": "2S81GobY9Iib8y4e",
+          "name": "openAI Paid API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "Answer the user's query or provide a reminder/note. ",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 3,
+      "position": [
+        -3968,
+        -1104
+      ],
+      "id": "0f72fa65-fbdc-4716-a81e-ea8e1e3e1288",
+      "name": "Secretary Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        -4880,
+        -992
+      ],
+      "id": "f782e5f7-cf4b-40ba-b5da-05c10138e968",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "Y7FcurmxHAkRGaLr",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        -4192,
+        -1008
+      ],
+      "id": "d6155dd6-8a60-4514-ae13-7e2413ecd8bb",
+      "name": "Redis Chat Memory1",
+      "credentials": {
+        "redis": {
+          "id": "Y7FcurmxHAkRGaLr",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        -3808,
+        -912
+      ],
+      "id": "6e7ee487-43db-48a2-9c43-7c3b3532eef5",
+      "name": "Redis Chat Memory2",
+      "credentials": {
+        "redis": {
+          "id": "Y7FcurmxHAkRGaLr",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        -3392,
+        -896
+      ],
+      "id": "73ccdc83-db75-4f4c-899e-9db14f65894c",
+      "name": "Redis Chat Memory3",
+      "credentials": {
+        "redis": {
+          "id": "Y7FcurmxHAkRGaLr",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        -2864,
+        -816
+      ],
+      "id": "e3feb905-ab1a-4562-b0f3-b2cd9386391c",
+      "name": "Redis Chat Memory4",
+      "credentials": {
+        "redis": {
+          "id": "Y7FcurmxHAkRGaLr",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        -2320,
+        -832
+      ],
+      "id": "04081219-d7ff-4f00-ad3f-ddd72fd796c7",
+      "name": "Redis Chat Memory5",
+      "credentials": {
+        "redis": {
+          "id": "Y7FcurmxHAkRGaLr",
+          "name": "Redis account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Gatekeeper Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Manager Agent (LLM Chain)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Manager Agent (LLM Chain)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Return as UNSAFE msg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenWeatherMap": {
+      "ai_tool": [
+        [
+          {
+            "node": "Weather(AI Agent)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "forex_request": {
+      "ai_tool": [
+        [
+          {
+            "node": "Forex Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "Google Calendar Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "Google Calendar Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "Google Calendar Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Gatekeeper Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Gatekeeper Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gatekeeper Agent1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manager Agent (LLM Chain)": {
+      "main": [
+        []
+      ]
+    },
+    "Google Calendar Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Manager Agent (LLM Chain)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Google Calendar Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Weather(AI Agent)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Forex Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Forex Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Manager Agent (LLM Chain)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Weather(AI Agent)": {
+      "ai_tool": [
+        [
+          {
+            "node": "Manager Agent (LLM Chain)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Secretary Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Secretary Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Manager Agent (LLM Chain)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Gatekeeper Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Manager Agent (LLM Chain)",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory2": {
+      "ai_memory": [
+        [
+          {
+            "node": "Secretary Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory3": {
+      "ai_memory": [
+        [
+          {
+            "node": "Forex Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory4": {
+      "ai_memory": [
+        [
+          {
+            "node": "Weather(AI Agent)",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory5": {
+      "ai_memory": [
+        [
+          {
+            "node": "Google Calendar Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "df34be43-eaac-4955-b540-a15b0427e484",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "257a4514ce84a37ecdbabf4f4e4ef791baf39f2189b94973fbdf382f1458c61e"
+  },
+  "id": "fCIpZLmRGeZ8qxyLNqgFH",
+  "tags": []
+}
