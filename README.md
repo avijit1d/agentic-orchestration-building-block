@@ -18,7 +18,7 @@ Demonstrates how a **Master AI Agent** can coordinate multiple **specialized AI 
   <img src="docs/architecture.png" width="600"/>
 </p>
 <p align="center"><em>
-Figure 1: Solution Architectire building block.
+Figure 1: Solution Architecture building block.
 </em></p>
 
 - **Workflow Execution**:
