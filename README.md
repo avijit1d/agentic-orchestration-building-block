@@ -26,7 +26,7 @@ Figure 1: Solution Architecture building block.
 - **Workflow Execution**:
 
 <p align="center">
-  <img src="docs/workflow.png" width="600"/>
+  <img src="docs/workflow.png" width="1500"/>
 </p>
 <p align="center"><em>
 Figure 2: N8N Workflow.
