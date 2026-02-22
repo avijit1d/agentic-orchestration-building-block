@@ -21,6 +21,8 @@ Demonstrates how a **Master AI Agent** can coordinate multiple **specialized AI 
 Figure 1: Solution Architecture building block.
 </em></p>
 
+---
+
 - **Workflow Execution**:
 
 <p align="center">
@@ -62,15 +64,25 @@ Figure 2: N8N Workflow.
 | Book a meeting with Ram tomorrow at 5 PM         | Google Calendar Agent     | 
 | Which is the most Ancient civilization in India? | Secretary Agent           | 
 
+---
+
 ## Design Considerations
 
 - **Modular & Reusable**: Master + tools can be extended with new specialized agents.
 - **Scalable**: RAG vector memory prevents memory bloat while providing relevant context.
 - **Human-like Interaction**: Master agent generates follow-up questions intelligently, maintaining conversational flow.
 
+---
 
 ## Potential Extensions
   - Add more specialized AI agents (CRM, Slack, Email, HR, etc.)
   - Integrate external enterprise systems
   - Enhance with vector memory with summarization for long-term context
   - Add analytics on multi-agent interactions
+
+---
+
+# Disclaimer
+
+This repository demonstrates architecture and engineering practices for enterprise AI systems.  
+It does not contain proprietary data or confidential configurations.
